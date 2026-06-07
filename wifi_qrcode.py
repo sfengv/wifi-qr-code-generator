@@ -1,3 +1,5 @@
+# ignore this. deprecated. use the web version instead.
+
 import qrcode
 from pathlib import Path
 

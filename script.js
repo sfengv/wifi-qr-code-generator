@@ -4,6 +4,9 @@
   const passEl = document.getElementById('password');
   const secEl = document.getElementById('security');
   const hiddenEl = document.getElementById('hidden');
+  const pwToggle = document.getElementById('pwToggle');
+  const pwStrengthEl = document.getElementById('pwStrength');
+  const pwText = document.getElementById('pw-strength-text');
   const form = document.getElementById('wifiForm');
   const payloadEl = document.getElementById('payload');
   const downloadBtn = document.getElementById('download');
@@ -21,7 +24,7 @@
     const ssid = ssidEl.value.trim();
     const pass = passEl.value;
     const type = secEl.value;
-    const hidden = hiddenEl.checked;
+    const hidden = hiddenEl ? hiddenEl.checked : false;
     if(!ssid) return '';
     const s = escapeVal(ssid);
     const h = hidden ? 'true' : 'false';
@@ -59,6 +62,54 @@
     qr.value = payload;
     payloadEl.value = payload;
   });
+
+  // Password visibility toggle
+  if(pwToggle && passEl){
+    pwToggle.addEventListener('click', ()=>{
+      const revealed = pwToggle.classList.toggle('revealed');
+      pwToggle.setAttribute('aria-pressed', revealed ? 'true' : 'false');
+      const eyeOpen = pwToggle.querySelector('.eye-open');
+      const eyeClosed = pwToggle.querySelector('.eye-closed');
+      if(eyeOpen) eyeOpen.style.display = revealed ? 'none' : 'block';
+      if(eyeClosed) eyeClosed.style.display = revealed ? 'block' : 'none';
+      passEl.type = revealed ? 'text' : 'password';
+    });
+  }
+
+  // Password strength meter (uses zxcvbn if available)
+  if(pwStrengthEl && passEl){
+    passEl.addEventListener('input', ()=>{
+      const val = passEl.value || '';
+      let score = 0;
+      let warning = '';
+      if(window.zxcvbn){
+        try{
+          const res = zxcvbn(val);
+          score = res.score || 0;
+          warning = (res.feedback && res.feedback.warning) ? res.feedback.warning : '';
+        }catch(e){
+          score = 0;
+        }
+      } else {
+        // Fallback heuristic
+        if(val.length >= 12) score = 3;
+        else if(val.length >= 8) score = 2;
+        else if(val.length > 0) score = 1;
+        else score = 0;
+      }
+
+      // Map zxcvbn (0-4) to three buckets: weak, ok, strong
+      let level = 'weak';
+      if(score <= 1) level = 'weak';
+      else if(score === 2) level = 'ok';
+      else level = 'strong';
+
+      pwStrengthEl.classList.remove('level-weak','level-ok','level-strong');
+      pwStrengthEl.classList.add('level-' + level);
+      const labels = {weak: 'Weak', ok: 'Ok', strong: 'Strong'};
+      pwText.textContent = val ? (labels[level] + (warning ? ' — ' + warning : '')) : 'Enter password';
+    });
+  }
 
   clearBtn.addEventListener('click', ()=>{
     ssidEl.value = '';
