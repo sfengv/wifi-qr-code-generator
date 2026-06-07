@@ -6,7 +6,7 @@ How to use
 
 - Open [index.html](index.html) in a browser (no server required).
 - Enter an SSID and password, choose security, then click "Generate".
-- Download the PNG or copy the QR payload.
+- Download the PNG (mobile: use Share/Save to Photos when available).
 
 Notes
 

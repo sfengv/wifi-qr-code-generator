@@ -8,9 +8,7 @@
   const pwStrengthEl = document.getElementById('pwStrength');
   const pwText = document.getElementById('pw-strength-text');
   const form = document.getElementById('wifiForm');
-  const payloadEl = document.getElementById('payload');
   const downloadBtn = document.getElementById('download');
-  const copyBtn = document.getElementById('copy');
   const clearBtn = document.getElementById('clear');
 
   const canvas = document.getElementById('qrCanvas');
@@ -60,7 +58,6 @@
     if(!payload) return;
     updateSize();
     qr.value = payload;
-    payloadEl.value = payload;
   });
 
   // Password visibility toggle
@@ -114,36 +111,44 @@
   clearBtn.addEventListener('click', ()=>{
     ssidEl.value = '';
     passEl.value = '';
-    payloadEl.value = '';
     qr.value = '';
   });
+  downloadBtn.addEventListener('click', async ()=>{
+    // export canvas as PNG blob
+    canvas.toBlob(async (blob)=>{
+      if(!blob) return;
+      const name = (ssidEl.value.trim() || 'wifi') + '.png';
+      const file = new File([blob], name, {type: 'image/png'});
 
-  downloadBtn.addEventListener('click', ()=>{
-    const url = canvas.toDataURL('image/png');
-    const a = document.createElement('a');
-    a.href = url;
-    const name = (ssidEl.value.trim() || 'wifi') + '.png';
-    a.download = name;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  });
-
-  copyBtn.addEventListener('click', async ()=>{
-    try{
-      await navigator.clipboard.writeText(payloadEl.value);
-      const textSpan = copyBtn.querySelector('.btn-text');
-      if(textSpan){
-        const prev = textSpan.textContent;
-        textSpan.textContent = 'Copied';
-        setTimeout(()=> textSpan.textContent = prev, 1200);
-      } else {
-        copyBtn.textContent = 'Copied';
-        setTimeout(()=>copyBtn.textContent = 'Copy payload', 1200);
+      // Try Web Share API with files (saves to user's choice, on mobile can save to Photos)
+      try{
+        if(navigator.canShare && navigator.canShare({files: [file]})){
+          await navigator.share({files: [file], title: name, text: 'Wi-Fi QR Code'});
+          return;
+        }
+      }catch(e){
+        // fall through to download fallback
+        console.warn('share failed', e);
       }
-    }catch(e){
-      console.warn('copy failed', e);
-    }
+
+      const url = URL.createObjectURL(blob);
+      const isIOS = /iP(ad|hone|od)/.test(navigator.userAgent) && !window.MSStream;
+      if(isIOS){
+        // iOS Safari: open image in new tab so user can long-press Save Image to Photos
+        window.open(url, '_blank');
+        setTimeout(()=> URL.revokeObjectURL(url), 10000);
+        return;
+      }
+
+      // Default: trigger download
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(()=> URL.revokeObjectURL(url), 10000);
+    }, 'image/png');
   });
 
   // initialize responsive size
