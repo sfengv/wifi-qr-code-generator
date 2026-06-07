@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Wi‑Fi QR Code Generator</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+</head>
+<body>
+  <main class="app">
+    <h1>Wi‑Fi QR Code Generator</h1>
+
+    <section class="card form-card">
+      <form id="wifiForm">
+        <label>SSID (network name)
+          <input type="text" id="ssid" placeholder="MyNetwork" required>
+        </label>
+
+        <label>Password
+          <input type="text" id="password" placeholder="password">
+        </label>
+
+        <label>Security
+          <select id="security">
+            <option value="WPA">WPA/WPA2</option>
+            <option value="WEP">WEP</option>
+            <option value="nopass">None (open)</option>
+          </select>
+        </label>
+
+        <label class="inline"><input type="checkbox" id="hidden"> Hidden network</label>
+
+        <div class="buttons">
+          <button type="submit" id="generate">Generate</button>
+          <button type="button" id="clear">Clear</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card result-card">
+      <div class="qr-wrap">
+        <canvas id="qrCanvas" aria-label="Generated QR code"></canvas>
+      </div>
+      <div class="result-meta">
+        <textarea id="payload" readonly rows="2" aria-label="WiFi QR payload"></textarea>
+        <div class="result-actions">
+          <button id="download">Download PNG</button>
+          <button id="copy">Copy payload</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="muted">Open-source, client-side. Works offline — just open this file.</footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
