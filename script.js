@@ -81,8 +81,15 @@
   copyBtn.addEventListener('click', async ()=>{
     try{
       await navigator.clipboard.writeText(payloadEl.value);
-      copyBtn.textContent = 'Copied';
-      setTimeout(()=>copyBtn.textContent = 'Copy payload', 1200);
+      const textSpan = copyBtn.querySelector('.btn-text');
+      if(textSpan){
+        const prev = textSpan.textContent;
+        textSpan.textContent = 'Copied';
+        setTimeout(()=> textSpan.textContent = prev, 1200);
+      } else {
+        copyBtn.textContent = 'Copied';
+        setTimeout(()=>copyBtn.textContent = 'Copy payload', 1200);
+      }
     }catch(e){
       console.warn('copy failed', e);
     }

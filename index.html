@@ -4,12 +4,23 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Wi‑Fi QR Code Generator</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='12' fill='%230b6efd'/%3E%3Cpath d='M6 10c3-3 9-3 12 0' stroke='%23fff' stroke-width='1.4' fill='none'/%3E%3Cpath d='M8.5 13c2-2 5-2 7 0' stroke='%23fff' stroke-width='1.6' fill='none'/%3E%3Ccircle cx='12' cy='16' r='1.6' fill='%23fff'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
 </head>
 <body>
   <main class="app">
-    <h1>Wi‑Fi QR Code Generator</h1>
+    <header class="app-header">
+      <div class="logo">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="12" cy="12" r="11" fill="#0b6efd" />
+          <path d="M7 10c3-3 9-3 12 0" stroke="#fff" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M9 13c2-2 6-2 8 0" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="12" cy="16" r="1.3" fill="#fff" />
+        </svg>
+        <h1>Wi‑Fi QR Code Generator</h1>
+      </div>
+    </header>
 
     <section class="card form-card">
       <form id="wifiForm">
@@ -32,8 +43,14 @@
         <label class="inline"><input type="checkbox" id="hidden"> Hidden network</label>
 
         <div class="buttons">
-          <button type="submit" id="generate">Generate</button>
-          <button type="button" id="clear">Clear</button>
+          <button type="submit" id="generate">
+            <svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="btn-text">Generate</span>
+          </button>
+          <button type="button" id="clear">
+            <svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="btn-text">Clear</span>
+          </button>
         </div>
       </form>
     </section>
@@ -45,8 +62,14 @@
       <div class="result-meta">
         <textarea id="payload" readonly rows="2" aria-label="WiFi QR payload"></textarea>
         <div class="result-actions">
-          <button id="download">Download PNG</button>
-          <button id="copy">Copy payload</button>
+          <button id="download">
+            <svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 21H4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="btn-text">Download PNG</span>
+          </button>
+          <button id="copy">
+            <svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M5 15V7a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="btn-text">Copy payload</span>
+          </button>
         </div>
       </div>
     </section>
