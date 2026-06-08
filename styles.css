@@ -47,6 +47,8 @@ textarea{resize:none;padding:10px;border-radius:8px;border:1px solid #eef2f7;bac
 .pw-bar{display:flex;gap:6px;width:110px}
 .pw-bar .seg{flex:1;height:8px;background:#eef4ff;border-radius:6px}
 .pw-text{font-size:0.9rem;color:var(--muted)}
+.pw-actions{margin-top:10px}
+.pw-actions button{min-width:180px}
 
 .pw-strength.level-weak .seg-1{background:#ef4444}
 .pw-strength.level-weak .seg-2{background:#f3d4d4}

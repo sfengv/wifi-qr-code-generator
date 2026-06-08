@@ -7,12 +7,47 @@
   const pwToggle = document.getElementById('pwToggle');
   const pwStrengthEl = document.getElementById('pwStrength');
   const pwText = document.getElementById('pw-strength-text');
+  const generatePasswordBtn = document.getElementById('generatePassword');
   const form = document.getElementById('wifiForm');
   const downloadBtn = document.getElementById('download');
   const clearBtn = document.getElementById('clear');
 
   const canvas = document.getElementById('qrCanvas');
   const qr = new QRious({element: canvas, size: 256, value: ''});
+
+  const passwordWords = [
+    'able','acid','acre','acorn','aloe','area','army','atom','aqua','arch',
+    'area','arid','army','atom','aura','away','baby','back','bacon','badge',
+    'bagel','baker','balmy','banana','banjo','basic','beach','beard','beast',
+    'bench','berry','black','blade','blank','blend','blind','blink','block',
+    'blood','bloom','board','boast','bonus','boost','bound','brain','brake',
+    'brave','bread','break','brick','bride','brief','bring','broad','brown',
+    'brush','buddy','build','built','bunch','cabin','cable','caddy','cafe','cake',
+    'candy','cargo','carry','catch','cause','cedar','chair','chalk','charm','chart',
+    'chase','cheap','cheek','cheer','chess','chick','chief','child','china',
+    'chill','chime','chimp','choir','choke','chore','cloud','clown','coach',
+    'coast','crate','crisp','cross','crown','crush','curve','cycle'
+  ];
+  const specialChars = ['!','$','%','&','*'];
+
+  function capitalizeWord(word){
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
+  function createGeneratedPassword(){
+    const maxAttempts = 200;
+    for(let attempt = 0; attempt < maxAttempts; attempt++){
+      const word1 = passwordWords[Math.floor(Math.random() * passwordWords.length)];
+      const word2 = passwordWords[Math.floor(Math.random() * passwordWords.length)];
+      const word3 = passwordWords[Math.floor(Math.random() * passwordWords.length)];
+      const total = word1.length + word2.length + word3.length;
+      if(total > 14) continue;
+      const suffix = `${Math.floor(Math.random() * 90 + 10)}${specialChars[Math.floor(Math.random() * specialChars.length)]}`;
+      const candidate = [word1, word2, word3].map(capitalizeWord).join('-') + suffix;
+      if(candidate.length < 20) return candidate;
+    }
+    return 'Fox-Dig-Hope0$';
+  }
 
   function escapeVal(v){
     return String(v).replace(/([\\;,:"])/g,'\\$1');
@@ -75,7 +110,7 @@
 
   // Password strength meter (uses zxcvbn if available)
   if(pwStrengthEl && passEl){
-    passEl.addEventListener('input', ()=>{
+    const updateStrength = ()=>{
       const val = passEl.value || '';
       let score = 0;
       let warning = '';
@@ -105,7 +140,17 @@
       pwStrengthEl.classList.add('level-' + level);
       const labels = {weak: 'Weak', ok: 'Ok', strong: 'Strong'};
       pwText.textContent = val ? (labels[level] + (warning ? ' — ' + warning : '')) : 'Enter password';
-    });
+    };
+
+    passEl.addEventListener('input', updateStrength);
+    updateStrength();
+
+    if(generatePasswordBtn){
+      generatePasswordBtn.addEventListener('click', ()=>{
+        passEl.value = createGeneratedPassword();
+        passEl.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+    }
   }
 
   clearBtn.addEventListener('click', ()=>{
