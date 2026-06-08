@@ -1,18 +1,22 @@
 # Wi‑Fi QR Code Generator
 
-Small client-side web app that generates a Wi‑Fi QR code from an SSID and password.
+Small client-side web app that generates a Wi‑Fi QR code from an SSID and password. This was completely vibe coded. Created this using VS Code + GitHub Copilot as an opportunity to learn how to use AI in software development.
+**Check it out here: https://sfengv.github.io/wifi-qr-code-generator/**
 
-How to use
+Capabilities
 
-- Open [index.html](index.html) in a browser (no server required).
-- Enter an SSID and password, choose security, then click "Generate".
-- Download the PNG (mobile: use Share/Save to Photos when available).
+- Generate a QR so friends and family can just scan it to join your Wi-Fi network instead of typing in passwords/passphrases.
+- Generate password feature.
+- Download the QR Code or share/save on mobile.
 
 Notes
 
 - This runs fully in the browser and works offline after the CDN script is cached.
-- Designed to be responsive and mobile-friendly.
-# wifi-qr-code-generator
+- No SSIDs or Passwords are stored anywhere. 
+
+
+# wifi-qr-code-generator python script
+DEPRECATED. Use the web app version instead.
 a python script to generate a qr code for devices to scan to join your wifi
 
 ai generated
